@@ -61,7 +61,7 @@ public struct MultiLineChartView: View {
         self.style = style
         self.darkModeStyle = style.darkModeStyle != nil ? style.darkModeStyle! : Styles.lineViewDarkMode
         self.formSize = form
-        frame = CGSize(width: self.formSize.width, height: self.formSize.height / 2)
+        frame = CGSize(width: self.formSize.width, height: self.formSize.height)
         self.rateValue = rateValue
         self.dropShadow = dropShadow
         self.valueSpecifier = valueSpecifier
@@ -72,42 +72,8 @@ public struct MultiLineChartView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(self.colorScheme == .dark ? self.darkModeStyle.backgroundColor : self.style.backgroundColor)
                 .frame(width: frame.width, height: frame.height, alignment: .center)
-                .shadow(radius: self.dropShadow ? 8 : 0)
+//                .shadow(radius: self.dropShadow ? 8 : 0)
             VStack(alignment: .leading){
-                if(!self.showIndicatorDot){
-                    VStack(alignment: .leading, spacing: 8){
-                        Text(self.title)
-                            .font(.title)
-                            .bold()
-                            .foregroundColor(self.colorScheme == .dark ? self.darkModeStyle.textColor : self.style.textColor)
-                        if (self.legend != nil){
-                            Text(self.legend!)
-                                .font(.callout)
-                                .foregroundColor(self.colorScheme == .dark ? self.darkModeStyle.legendTextColor : self.style.legendTextColor)
-                        }
-                        HStack {
-                            if (rateValue ?? 0 >= 0){
-                                Image(systemName: "arrow.up")
-                            }else{
-                                Image(systemName: "arrow.down")
-                            }
-                            Text("\(rateValue ?? 0)%")
-                        }
-                    }
-                    .transition(.opacity)
-                    .animation(.easeIn(duration: 0.1))
-                    .padding([.leading, .top])
-                }else{
-                    HStack{
-                        Spacer()
-                        Text("\(self.currentValue, specifier: self.valueSpecifier)")
-                            .font(.system(size: 41, weight: .bold, design: .default))
-                            .offset(x: 0, y: 30)
-                        Spacer()
-                    }
-                    .transition(.scale)
-                }
-                Spacer()
                 GeometryReader{ geometry in
                     ZStack{
                         ForEach(0..<self.data.count) { i in
