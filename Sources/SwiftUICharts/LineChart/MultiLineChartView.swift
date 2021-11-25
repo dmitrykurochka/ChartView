@@ -17,7 +17,8 @@ public struct MultiLineChartView: View {
     public var formSize: CGSize
     public var dropShadow: Bool
     public var valueSpecifier:String
-    
+    public var legendSpecifier: String = "%.0f"
+
     @State private var touchLocation:CGPoint = .zero
     @State private var showIndicatorDot: Bool = false
     @State private var currentValue: Double = 2 {
@@ -28,6 +29,7 @@ public struct MultiLineChartView: View {
             
         }
     }
+    @State private var hideHorizontalLines: Bool = false
     
     var globalMin:Double {
         if let min = data.flatMap({$0.onlyPoints()}).min() {
@@ -72,6 +74,8 @@ public struct MultiLineChartView: View {
             VStack(alignment: .leading){
                 GeometryReader{ geometry in
                     ZStack{
+                        GeometryReader{ reader in
+                            
                         ForEach(0..<self.data.count) { i in
                             Line(data: self.data[i],
                                  frame: .constant(geometry.frame(in: .local)),
@@ -83,6 +87,11 @@ public struct MultiLineChartView: View {
                                  gradient: self.data[i].getGradient(),
                                  index: i)
                         }
+                            Legend(data: ChartData(points: self.data[0].points.map({ $0.1 })),
+                               frame: .constant(reader.frame(in: .local)), hideHorizontalLines: self.$hideHorizontalLines, specifier: legendSpecifier)
+                            .transition(.opacity)
+                            .animation(Animation.easeOut(duration: 1).delay(1))
+                        }
                     }
                 }
                 .frame(width: frame.width, height: frame.height + 30)
@@ -90,16 +99,16 @@ public struct MultiLineChartView: View {
                 .offset(x: 0, y: 0)
             }.frame(width: self.formSize.width, height: self.formSize.height)
         }
-        .gesture(DragGesture()
-        .onChanged({ value in
+//        .gesture(DragGesture()
+//        .onChanged({ value in
 //            self.touchLocation = value.location
 //            self.showIndicatorDot = true
 //            self.getClosestDataPoint(toPoint: value.location, width:self.frame.width, height: self.frame.height)
-        })
-            .onEnded({ value in
-                self.showIndicatorDot = false
-            })
-        )
+//        })
+//            .onEnded({ value in
+//                self.showIndicatorDot = false
+//            })
+//        )
     }
     
 //    @discardableResult func getClosestDataPoint(toPoint: CGPoint, width:CGFloat, height: CGFloat) -> CGPoint {
