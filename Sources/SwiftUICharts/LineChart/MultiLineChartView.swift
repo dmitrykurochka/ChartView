@@ -61,7 +61,7 @@ public struct MultiLineChartView: View {
         self.style = style
         self.darkModeStyle = style.darkModeStyle != nil ? style.darkModeStyle! : Styles.lineViewDarkMode
         self.formSize = form
-        frame = CGSize(width: self.formSize.width, height: self.formSize.height/2)
+        frame = CGSize(width: self.formSize.width, height: self.formSize.height)
         self.rateValue = rateValue
         self.dropShadow = dropShadow
         self.valueSpecifier = valueSpecifier
@@ -71,7 +71,7 @@ public struct MultiLineChartView: View {
         ZStack(alignment: .center){
             RoundedRectangle(cornerRadius: 20)
                 .fill(self.colorScheme == .dark ? self.darkModeStyle.backgroundColor : self.style.backgroundColor)
-                .frame(width: frame.width, height: 240, alignment: .center)
+                .frame(width: frame.width, height: frame.height, alignment: .center)
                 .shadow(radius: self.dropShadow ? 8 : 0)
             VStack(alignment: .leading){
                 if(!self.showIndicatorDot){
