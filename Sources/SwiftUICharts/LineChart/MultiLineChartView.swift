@@ -61,7 +61,7 @@ public struct MultiLineChartView: View {
         self.style = style
         self.darkModeStyle = style.darkModeStyle != nil ? style.darkModeStyle! : Styles.lineViewDarkMode
         self.formSize = form
-        frame = CGSize(width: self.formSize.width, height: self.formSize.height)
+        frame = CGSize(width: self.formSize.width, height: self.formSize.height / 2)
         self.rateValue = rateValue
         self.dropShadow = dropShadow
         self.valueSpecifier = valueSpecifier
